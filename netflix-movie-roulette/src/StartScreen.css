@@ -1,0 +1,19 @@
+.main-wrapper {
+  width: 440px;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  padding: 5rem;
+  margin: 2rem;
+}
+
+.label {
+  width: 100%;
+}
+.form {
+  min-width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}

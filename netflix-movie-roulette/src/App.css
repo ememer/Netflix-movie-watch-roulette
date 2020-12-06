@@ -1,0 +1,18 @@
+.App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  z-index: 2;
+}
+.App::before {
+  content: "";
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-image: url("./bg.jpg");
+  background-position: center;
+  background-size: cover;
+  opacity: 5%;
+}
