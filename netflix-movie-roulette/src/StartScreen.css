@@ -17,3 +17,14 @@
   align-items: center;
   justify-content: center;
 }
+
+.MuiSelect-icon {
+  color: #d78e2e !important;
+}
+
+.MuiInput-underline:before {
+  border-bottom: 1px solid #84817d !important;
+}
+.MuiInput-underline:after {
+  border-bottom: 1px solid #d78e2e !important;
+}

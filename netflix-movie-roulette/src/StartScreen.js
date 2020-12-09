@@ -8,8 +8,16 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import "./StartScreen.css";
+import { useState } from "react";
 
 const StartScreen = () => {
+  const [filterValue, setFilterValue] = useState({
+    category: "",
+    type: "",
+  });
+  const [isCategory, setIsCategory] = useState(false);
+  const [cardDisplay, setCardDisplay] = useState("default");
+
   //////////////////////////////////////////////////
   //THEME
   //////////////////////////////////////////////////
@@ -18,37 +26,83 @@ const StartScreen = () => {
   const labelStyle = clsx(useLabelStyle().root);
   //////////////////////////////////////////////////
   //////////////////////////////////////////////////
+
+  const handeSubmit = (e) => {
+    e.preventDefault();
+    if (filterValue.category === "") {
+      alert("test");
+    }
+  };
+
+  // const handleSelect = (e) => {
+  //   if (!isCategory) {
+  //     setFilterValue({
+  //       category: e.target.value,
+  //       type: "random",
+  //     });
+  //     setIsCategory(true);
+  //   } else {
+  //     setFilterValue({
+  //       category: filterValue.category,
+  //       type: e.target.value,
+  //     });
+  //   }
+  // };
+
+  const handleCategory = (e) => {
+    if (filterValue.type !== "") {
+      setFilterValue({
+        category: e.target.value,
+        type: filterValue.type,
+      });
+    } else {
+      setFilterValue({
+        category: e.target.value,
+        type: "random",
+      });
+    }
+  };
+  const handleType = (e) => {
+    setFilterValue({
+      category: filterValue.category,
+      type: e.target.value,
+    });
+  };
+
   return (
     <section className="main-wrapper">
-      <form className="form">
+      <form onSubmit={handeSubmit} className="form">
         <FormControl className="label">
-          <InputLabel className={labelStyle} id="simple-select-label">
-            Category
-          </InputLabel>
+          <InputLabel className={labelStyle}>Category</InputLabel>
+
           <Select
+            name="Category"
             className={selectStyle}
             labelId="simple-select-label"
-            id="simple-select"
+            id="category"
+            onChange={handleCategory}
+            value={filterValue.category}
           >
-            <MenuItem value={10}>Movie</MenuItem>
-            <MenuItem value={20}>Series</MenuItem>
+            <MenuItem value={"movie"}>Movie</MenuItem>s
+            <MenuItem value={"series"}>Series</MenuItem>
           </Select>
         </FormControl>
         <FormControl className="label">
-          <InputLabel className={labelStyle} id="simple-select-label">
-            Type
-          </InputLabel>
+          <InputLabel className={labelStyle}>Type</InputLabel>
           <Select
+            name={"Type"}
             className={selectStyle}
             labelId="simple-select-label"
-            id="simple-select"
+            id="type"
+            onChange={handleType}
+            value={filterValue.type}
           >
-            <MenuItem value={10}>Random</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value={"random"}>Random</MenuItem>
+            <MenuItem value={"test1"}>Test1</MenuItem>
+            <MenuItem value={"test2"}>Test2</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="contained" className={btnStyle}>
+        <Button type="submit" variant="contained" className={btnStyle}>
           START
         </Button>
       </form>
@@ -60,15 +114,14 @@ export default StartScreen;
 
 const useBackgroundStyle = makeStyles({
   root: {
-    background: "#D78E2E",
-    color: "white",
+    background: "#996726",
     width: "25rem",
     height: "5rem",
     marginTop: "5rem",
     color: "#1b1b22",
 
     "&:hover": {
-      background: "#996726",
+      background: "#D78E2E",
     },
   },
 });
