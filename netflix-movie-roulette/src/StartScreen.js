@@ -8,70 +8,77 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import "./StartScreen.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const StartScreen = () => {
   const [filterValue, setFilterValue] = useState({
     category: "",
-    type: "",
+    year: "",
   });
-  const [isCategory, setIsCategory] = useState(false);
-  const [cardDisplay, setCardDisplay] = useState("default");
+  const [movieList, setMovieList] = useState([]);
 
   //////////////////////////////////////////////////
   //THEME
   //////////////////////////////////////////////////
-  const btnStyle = clsx(useBackgroundStyle().root);
+  const btnStyle = clsx(useButtonStyle().root);
   const selectStyle = clsx(useSelectStyle().root);
   const labelStyle = clsx(useLabelStyle().root);
   //////////////////////////////////////////////////
   //////////////////////////////////////////////////
 
-  const handeSubmit = (e) => {
+  useEffect(() => {
+    fetch(
+      "https://unogsng.p.rapidapi.com/search?start_year=1972&orderby=rating&limit=100&countrylist=78&offset=0&end_year=2020",
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "375995c1famsh38e147a788b1bacp115fd9jsn82cc7bb4b221",
+          "x-rapidapi-host": "unogsng.p.rapidapi.com",
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((dataApi) => {
+        setMovieList([...dataApi.results.map((data) => data.year)]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (filterValue.category === "") {
       alert("test");
     }
   };
 
-  // const handleSelect = (e) => {
-  //   if (!isCategory) {
-  //     setFilterValue({
-  //       category: e.target.value,
-  //       type: "random",
-  //     });
-  //     setIsCategory(true);
-  //   } else {
-  //     setFilterValue({
-  //       category: filterValue.category,
-  //       type: e.target.value,
-  //     });
-  //   }
-  // };
-
   const handleCategory = (e) => {
-    if (filterValue.type !== "") {
+    if (filterValue.year !== "") {
       setFilterValue({
         category: e.target.value,
-        type: filterValue.type,
+        year: filterValue.year,
       });
     } else {
       setFilterValue({
         category: e.target.value,
-        type: "random",
+        year: "random",
       });
     }
   };
-  const handleType = (e) => {
+  const handleYear = (e) => {
     setFilterValue({
       category: filterValue.category,
-      type: e.target.value,
+      year: e.target.value,
     });
   };
 
   return (
     <section className="main-wrapper">
-      <form onSubmit={handeSubmit} className="form">
+      <form onSubmit={handleSubmit} className="form">
         <FormControl className="label">
           <InputLabel className={labelStyle}>Category</InputLabel>
 
@@ -88,18 +95,19 @@ const StartScreen = () => {
           </Select>
         </FormControl>
         <FormControl className="label">
-          <InputLabel className={labelStyle}>Type</InputLabel>
+          <InputLabel className={labelStyle}>Year</InputLabel>
           <Select
-            name={"Type"}
+            name={"Year"}
             className={selectStyle}
             labelId="simple-select-label"
-            id="type"
-            onChange={handleType}
-            value={filterValue.type}
+            id="year"
+            onChange={handleYear}
+            value={filterValue.year}
           >
             <MenuItem value={"random"}>Random</MenuItem>
-            <MenuItem value={"test1"}>Test1</MenuItem>
-            <MenuItem value={"test2"}>Test2</MenuItem>
+            {movieList.map((elem, idx) => (
+              <MenuItem key={idx}>{elem}</MenuItem>
+            ))}
           </Select>
         </FormControl>
         <Button type="submit" variant="contained" className={btnStyle}>
@@ -112,7 +120,7 @@ const StartScreen = () => {
 
 export default StartScreen;
 
-const useBackgroundStyle = makeStyles({
+const useButtonStyle = makeStyles({
   root: {
     background: "#996726",
     width: "25rem",
@@ -139,6 +147,5 @@ const useSelectStyle = makeStyles({
 const useLabelStyle = makeStyles({
   root: {
     color: "#84817D",
-    borderColor: "red",
   },
 });
