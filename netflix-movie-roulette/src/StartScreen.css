@@ -2,8 +2,9 @@
   width: 440px;
   height: 80vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 5rem;
+  padding: 2rem;
   margin: 2rem;
 }
 
@@ -18,6 +19,14 @@
   justify-content: center;
 }
 
+.title {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: tomato;
+}
+
 .MuiSelect-icon {
   color: #d78e2e !important;
 }
@@ -27,4 +36,10 @@
 }
 .MuiInput-underline:after {
   border-bottom: 1px solid #d78e2e !important;
+}
+
+.data-loading-comm {
+  text-align: center;
+  font-size: 1.5rem;
+  color: white;
 }
