@@ -15,7 +15,9 @@ const StartScreen = () => {
   const [filterValue, setFilterValue] = useState({
     category: "",
     year: "",
+    genre: "",
   });
+  const [genres, setGenres] = useState([]);
   const [movieList, setMovieList] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
@@ -56,6 +58,25 @@ const StartScreen = () => {
       .catch((err) => {
         console.error(err);
       });
+
+    fetch("https://unogsng.p.rapidapi.com/genres", {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": "375995c1famsh38e147a788b1bacp115fd9jsn82cc7bb4b221",
+        "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      },
+    })
+      .then((generesData) => {
+        return generesData.json();
+      })
+      .then((genreApi) => {
+        const genreArray = genreApi.results.map((data) => data.genre);
+        const uniqueGenre = [...new Set(genreArray)];
+        setGenres(uniqueGenre.sort());
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   const handleSubmit = (e) => {
@@ -72,11 +93,13 @@ const StartScreen = () => {
       setFilterValue({
         category: e.target.value,
         year: filterValue.year,
+        genre: filterValue.genre,
       });
     } else {
       setFilterValue({
         category: e.target.value,
         year: "random",
+        genre: "random",
       });
     }
   };
@@ -84,6 +107,15 @@ const StartScreen = () => {
     setFilterValue({
       category: filterValue.category,
       year: e.target.value,
+      genre: filterValue.genre,
+    });
+  };
+
+  const handleGenre = (e) => {
+    setFilterValue({
+      category: filterValue.category,
+      year: filterValue.year,
+      genre: e.target.value,
     });
   };
 
@@ -127,6 +159,24 @@ const StartScreen = () => {
               {movieList.map((elem, idx) => (
                 <MenuItem value={elem} key={idx}>
                   {elem}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl className="label">
+            <InputLabel className={labelStyle}>Genre</InputLabel>
+            <Select
+              name={"Genre"}
+              className={selectStyle}
+              labelId="simple-select-label"
+              id="genre"
+              onChange={handleGenre}
+              value={filterValue.genre}
+            >
+              <MenuItem value={"random"}>Random</MenuItem>
+              {genres.map((genre, idx) => (
+                <MenuItem value={genre} key={idx}>
+                  {genre}
                 </MenuItem>
               ))}
             </Select>

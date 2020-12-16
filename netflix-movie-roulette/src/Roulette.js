@@ -1,6 +1,5 @@
 import "./Roulette.css";
 import {
-  Card,
   Paper,
   Grid,
   CardMedia,
@@ -25,15 +24,48 @@ const Roulette = () => {
                   backgroundSize: "cover",
                 }}
                 component="img"
-                image="https://miro.medium.com/max/3000/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg"
+                image="https://chillycube.pl/images/img14.jpg"
               />
             </Paper>
           </Grid>
 
           <Grid item lg={7} md={6} xs={12}>
-            <Paper className={paperStyle}>
-              <Typography>{message}</Typography>
-            </Paper>
+            <Grid container spacing={2}>
+              <Grid item lg={12} xs={12}>
+                <Paper className={paperStyle}>
+                  <Typography
+                    style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                  >
+                    title
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item>
+                <Paper className={paperStyle}>
+                  <Typography>{message}</Typography>
+                </Paper>
+              </Grid>
+              <Grid item lg={3} xs={3}>
+                <Paper className={paperStyle}>
+                  <Typography>Type</Typography>
+                </Paper>
+              </Grid>
+              <Grid item lg={3} xs={3}>
+                <Paper className={paperStyle}>
+                  <Typography>Year</Typography>
+                </Paper>
+              </Grid>
+              <Grid item lg={3} xs={3}>
+                <Paper className={paperStyle}>
+                  <Typography>Rating imbd</Typography>
+                </Paper>
+              </Grid>
+              <Grid item lg={3} xs={3}>
+                <Paper className={paperStyle}>
+                  <Typography>Run time</Typography>
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
