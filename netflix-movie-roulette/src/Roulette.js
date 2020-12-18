@@ -9,7 +9,10 @@ import {
 import clsx from "clsx";
 
 const Roulette = () => {
+  ////////////////////////////////
+  ///////////THEME///////////////
   const paperStyle = clsx(usePaperStyle().paper);
+  ////////////////////////////////
 
   return (
     <div className="roulette">

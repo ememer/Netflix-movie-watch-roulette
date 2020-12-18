@@ -11,7 +11,7 @@ import clsx from "clsx";
 import "./StartScreen.css";
 import { useEffect, useState } from "react";
 
-const StartScreen = () => {
+const StartScreen = (props) => {
   const [filterValue, setFilterValue] = useState({
     category: "",
     year: "",
@@ -85,8 +85,17 @@ const StartScreen = () => {
       // Will be done later
       // Popup or modal
       alert("test");
+      return;
     }
+    //Setting screen render n inform user which category chose
+    props.changeScreen(2, filterValue.category);
   };
+
+  /////////////////////////////////////////////////
+  ////////////////TODO////////////////////////////
+  ///////////////////////////////////////////////
+  //Fix handlers (lock or fill category when they not select step by step by user)
+  //////////////////////////////////////////////
 
   const handleCategory = (e) => {
     if (filterValue.year !== "") {

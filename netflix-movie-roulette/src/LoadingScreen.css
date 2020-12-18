@@ -1,0 +1,27 @@
+.progress {
+  width: 100%;
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  color: #84817d;
+  font-size: 1.5rem;
+  padding-top: 20px;
+}
+
+span {
+  font-size: 2rem;
+}
+
+.type-content {
+  color: #d78e2e;
+  font-size: 2rem;
+}

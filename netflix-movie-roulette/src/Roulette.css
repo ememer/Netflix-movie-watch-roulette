@@ -1,4 +1,7 @@
 .roulette {
   align-items: center;
   padding: 40px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
