@@ -88,13 +88,14 @@ const StartScreen = (props) => {
       return;
     }
     //Setting screen render n inform user which category chose
-    props.changeScreen(2, filterValue.category);
+    props.changeScreen(2, filterValue.category, filterValue);
   };
 
   /////////////////////////////////////////////////
   ////////////////TODO////////////////////////////
   ///////////////////////////////////////////////
   //Fix handlers (lock or fill category when they not select step by step by user)
+  //Double submit lock
   //////////////////////////////////////////////
 
   const handleCategory = (e) => {
