@@ -2,24 +2,20 @@ import Button from "@material-ui/core/Button";
 import {
   FormControl,
   InputLabel,
-  LinearProgress,
   makeStyles,
   MenuItem,
   Select,
 } from "@material-ui/core";
 import clsx from "clsx";
 import "./StartScreen.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const StartScreen = (props) => {
+  const [genres] = useState(genreList);
   const [filterValue, setFilterValue] = useState({
     category: "",
-    year: "",
     genre: "",
   });
-  const [genres, setGenres] = useState([]);
-  const [movieList, setMovieList] = useState([]);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   //////////////////////////////////////////////////
   //THEME
@@ -30,55 +26,6 @@ const StartScreen = (props) => {
   //////////////////////////////////////////////////
   //////////////////////////////////////////////////
 
-  useEffect(() => {
-    fetch(
-      "https://unogsng.p.rapidapi.com/search?start_year=1972&orderby=rating&limit=100&countrylist=78&offset=0&end_year=2020",
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-key":
-            "375995c1famsh38e147a788b1bacp115fd9jsn82cc7bb4b221",
-          "x-rapidapi-host": "unogsng.p.rapidapi.com",
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      //Setting data from API, delate and sort value from data
-      .then((dataApi) => {
-        // Hide loading data animation
-        setIsDataLoaded(true);
-        const dataArray = dataApi.results.map((data) => data.year);
-        //Return new array without duplicate values
-        const uniqueValueData = [...new Set(dataArray)];
-        //Sort returned array by values
-        setMovieList(uniqueValueData.sort());
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-    fetch("https://unogsng.p.rapidapi.com/genres", {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "375995c1famsh38e147a788b1bacp115fd9jsn82cc7bb4b221",
-        "x-rapidapi-host": "unogsng.p.rapidapi.com",
-      },
-    })
-      .then((generesData) => {
-        return generesData.json();
-      })
-      .then((genreApi) => {
-        const genreArray = genreApi.results.map((data) => data.genre);
-        const uniqueGenre = [...new Set(genreArray)];
-        setGenres(uniqueGenre.sort());
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (filterValue.category === "") {
@@ -88,43 +35,27 @@ const StartScreen = (props) => {
       return;
     }
     //Setting screen render n inform user which category chose
-    props.changeScreen(2, filterValue.category, filterValue);
+    props.changeScreen(2);
+    props.userDataInput(filterValue);
   };
 
-  /////////////////////////////////////////////////
-  ////////////////TODO////////////////////////////
-  ///////////////////////////////////////////////
-  //Fix handlers (lock or fill category when they not select step by step by user)
-  //Double submit lock
-  //////////////////////////////////////////////
-
   const handleCategory = (e) => {
-    if (filterValue.year !== "") {
+    if (filterValue.genre !== "") {
       setFilterValue({
         category: e.target.value,
-        year: filterValue.year,
         genre: filterValue.genre,
       });
     } else {
       setFilterValue({
         category: e.target.value,
-        year: "random",
         genre: "random",
       });
     }
-  };
-  const handleYear = (e) => {
-    setFilterValue({
-      category: filterValue.category,
-      year: e.target.value,
-      genre: filterValue.genre,
-    });
   };
 
   const handleGenre = (e) => {
     setFilterValue({
       category: filterValue.category,
-      year: filterValue.year,
       genre: e.target.value,
     });
   };
@@ -132,17 +63,10 @@ const StartScreen = (props) => {
   return (
     <>
       <section className="main-wrapper">
-        {!isDataLoaded ? (
-          <div className="data-loading-comm">
-            <LinearProgress color="secondary" />
-            <p>Stay patient - data is loading! 👌</p>
-          </div>
-        ) : null}
         <h1 className="title">🎥 NETFLIX ROULETTE 🎲</h1>
         <form onSubmit={handleSubmit} className="form">
           <FormControl className="label">
             <InputLabel className={labelStyle}>Category</InputLabel>
-
             <Select
               name="Category"
               className={selectStyle}
@@ -156,24 +80,6 @@ const StartScreen = (props) => {
             </Select>
           </FormControl>
           <FormControl className="label">
-            <InputLabel className={labelStyle}>Year</InputLabel>
-            <Select
-              name={"Year"}
-              className={selectStyle}
-              labelId="simple-select-label"
-              id="year"
-              onChange={handleYear}
-              value={filterValue.year}
-            >
-              <MenuItem value={"random"}>Random</MenuItem>
-              {movieList.map((elem, idx) => (
-                <MenuItem value={elem} key={idx}>
-                  {elem}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl className="label">
             <InputLabel className={labelStyle}>Genre</InputLabel>
             <Select
               name={"Genre"}
@@ -184,13 +90,14 @@ const StartScreen = (props) => {
               value={filterValue.genre}
             >
               <MenuItem value={"random"}>Random</MenuItem>
-              {genres.map((genre, idx) => (
-                <MenuItem value={genre} key={idx}>
-                  {genre}
+              {genres.map((genre) => (
+                <MenuItem value={genre.netflixId} key={genre.netflixId}>
+                  {genre.genre}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
+
           <Button type="submit" variant="contained" className={btnStyle}>
             START
           </Button>
@@ -231,3 +138,20 @@ const useLabelStyle = makeStyles({
     color: "#84817D",
   },
 });
+
+const genreList = [
+  { genre: "Action & Adventure", netflixId: 1365 },
+  { genre: "Anime", netflixId: 7424 },
+  { genre: "Children & Family", netflixId: 783 },
+  { genre: "Classic", netflixId: 31574 },
+  { genre: "Comedies", netflixId: 6548 },
+  { genre: "Documentaries", netflixId: 6839 },
+  { genre: "Dramas", netflixId: 5763 },
+  { genre: "Horror", netflixId: 8711 },
+  { genre: "Music", netflixId: 1701 },
+  { genre: "Romantic", netflixId: 8883 },
+  { genre: "Sci-fi & Fantasy", netflixId: 1492 },
+  { genre: "Sports", netflixId: 4370 },
+  { genre: "Thrillers", netflixId: 8933 },
+  { genre: "TV Shows", netflixId: 83 },
+];

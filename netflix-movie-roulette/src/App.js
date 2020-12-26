@@ -6,13 +6,20 @@ import StartScreen from "./StartScreen";
 
 function App() {
   const [screen, setScreen] = useState();
-  const [whichCategory, setWhichCategory] = useState();
-  const [userChoice, setUserChoice] = useState();
+  const [userDataInput, setUserDataInput] = useState();
+  const [filterResponse, setFilterResponse] = useState("");
 
-  function nextStep(screen, category, userInput) {
+  function nextStep(screen) {
     setScreen(screen);
-    setWhichCategory(category);
-    setUserChoice(userInput);
+  }
+
+  function getInputData(dataInput) {
+    setUserDataInput(dataInput);
+  }
+
+  function getResponse(serverResponse) {
+    setFilterResponse(serverResponse);
+    console.log(serverResponse);
   }
 
   switch (screen) {
@@ -20,23 +27,23 @@ function App() {
       return (
         <div className="App">
           <LoadingScreen
+            getResponse={getResponse}
             changeScreen={nextStep}
-            category={whichCategory}
-            userInput={userChoice}
+            userData={userDataInput}
           />
         </div>
       );
     case 3:
       return (
         <div className="App">
-          <Roulette />
+          <Roulette response={filterResponse} />
         </div>
       );
 
     default:
       return (
         <div className="App">
-          <StartScreen changeScreen={nextStep} />
+          <StartScreen userDataInput={getInputData} changeScreen={nextStep} />
         </div>
       );
   }
