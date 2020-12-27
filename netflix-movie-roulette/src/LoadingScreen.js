@@ -16,14 +16,13 @@ const LoadingScreen = (props) => {
   const [isLoad, setIsLoad] = useState(false);
   const [movieYears, setMovieYears] = useState([]);
   const [yearValue, setYearValue] = useState("random");
-  const [res, setRes] = useState();
   const [resetData, setResetData] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
   useEffect(() => {
     if (resetData) {
       getFetchData(
         ` https://unogsng.p.rapidapi.com/search?type=${props.userData.category}&start_year=${yearValue}&offset=0&end_year=${yearValue}`
       );
-      console.log("FETCH");
     }
 
     if (resetData === false) {
@@ -52,12 +51,18 @@ const LoadingScreen = (props) => {
         })
         .then((data) => {
           props.getResponse(data);
-          setMovieYears([...new Set(data.results.map((items) => items.year))]);
+          const dataYearsValue = data.results.map((items) => items.year);
+          setMovieYears([...new Set(dataYearsValue.sort())]);
           setIsLoad(true);
-          console.log(yearValue);
-          setRes(data);
         })
-
+        .then(() => {
+          if (isFiltered) {
+            setIsFiltered(false);
+            setTimeout(() => {
+              props.changeScreen(3);
+            }, 1500);
+          }
+        })
         .catch((err) => {
           console.error(err);
         });
@@ -65,10 +70,9 @@ const LoadingScreen = (props) => {
 
     if (yearValue !== "random") {
       setResetData(true);
-      console.log("dipa");
+      setIsFiltered(true);
     } else {
       setIsLoad(false);
-      console.log("dupa");
     }
   }, [props.userData.genre, resetData, yearValue]);
 

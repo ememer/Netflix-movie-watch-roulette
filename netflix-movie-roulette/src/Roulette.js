@@ -7,12 +7,46 @@ import {
   Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
 
-const Roulette = () => {
+const Roulette = (props) => {
+  const [drawnValue, setDrawValue] = useState({
+    img: "loading",
+    title: "loading",
+    synopsis: "loading",
+    runtime: "loading",
+    year: "loading",
+    imdb: "loading",
+    type: "loading",
+  });
   ////////////////////////////////
   ///////////THEME///////////////
   const paperStyle = clsx(usePaperStyle().paper);
   ////////////////////////////////
+
+  useEffect(() => {
+    const getFilteredResponse = (propsResponse) => {
+      const drawnResult = Math.floor(
+        Math.random() * (parseInt(propsResponse) - 0 + 1)
+      );
+      console.log("res", drawnResult);
+      console.log(props.response.results[drawnResult]);
+      setDrawValue({
+        img: props.response.results[drawnResult].poster,
+        title: props.response.results[drawnResult].title,
+        synopsis: props.response.results[drawnResult].synopsis,
+        runtime: props.response.results[drawnResult].runtime,
+        year: props.response.results[drawnResult].year,
+        imdb:
+          props.response.results[drawnResult].imdbrating !== null
+            ? props.response.results[drawnResult].imdbrating
+            : "No specify",
+        type: props.response.results[drawnResult].vtype,
+      });
+    };
+
+    getFilteredResponse(props.response.results.length);
+  }, [props.response]);
 
   return (
     <div className="roulette">
@@ -27,7 +61,7 @@ const Roulette = () => {
                   backgroundSize: "cover",
                 }}
                 component="img"
-                image="https://chillycube.pl/images/img14.jpg"
+                image={drawnValue.img}
               />
             </Paper>
           </Grid>
@@ -39,33 +73,35 @@ const Roulette = () => {
                   <Typography
                     style={{ fontWeight: "bold", fontSize: "1.2rem" }}
                   >
-                    title
+                    {drawnValue.title}
                   </Typography>
                 </Paper>
               </Grid>
               <Grid item>
                 <Paper className={paperStyle}>
-                  <Typography>{message}</Typography>
+                  <Typography>{drawnValue.synopsis}</Typography>
                 </Paper>
               </Grid>
               <Grid item lg={3} xs={3}>
                 <Paper className={paperStyle}>
-                  <Typography>Type</Typography>
+                  <Typography>{drawnValue.type}</Typography>
                 </Paper>
               </Grid>
               <Grid item lg={3} xs={3}>
                 <Paper className={paperStyle}>
-                  <Typography>Year</Typography>
+                  <Typography>{drawnValue.year}</Typography>
                 </Paper>
               </Grid>
               <Grid item lg={3} xs={3}>
                 <Paper className={paperStyle}>
-                  <Typography>Rating imbd</Typography>
+                  <Typography>{drawnValue.imdb}</Typography>
                 </Paper>
               </Grid>
               <Grid item lg={3} xs={3}>
                 <Paper className={paperStyle}>
-                  <Typography>Run time</Typography>
+                  <Typography>
+                    {(`${drawnValue.runtime}` / 3600).toFixed(2)}h
+                  </Typography>
                 </Paper>
               </Grid>
             </Grid>

@@ -7,7 +7,7 @@ import StartScreen from "./StartScreen";
 function App() {
   const [screen, setScreen] = useState();
   const [userDataInput, setUserDataInput] = useState();
-  const [filterResponse, setFilterResponse] = useState("");
+  const [filterResponse, setFilterResponse] = useState();
 
   function nextStep(screen) {
     setScreen(screen);
@@ -19,7 +19,6 @@ function App() {
 
   function getResponse(serverResponse) {
     setFilterResponse(serverResponse);
-    console.log(serverResponse);
   }
 
   switch (screen) {
