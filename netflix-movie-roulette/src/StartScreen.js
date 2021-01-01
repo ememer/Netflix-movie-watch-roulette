@@ -1,14 +1,17 @@
 import Button from "@material-ui/core/Button";
 import {
   FormControl,
+  Grow,
   InputLabel,
   makeStyles,
   MenuItem,
   Select,
+  Snackbar,
 } from "@material-ui/core";
 import clsx from "clsx";
 import "./StartScreen.css";
 import { useState } from "react";
+import Alert from "@material-ui/lab/Alert";
 
 const StartScreen = (props) => {
   const [genres] = useState(genreList);
@@ -16,7 +19,7 @@ const StartScreen = (props) => {
     category: "",
     genre: "",
   });
-
+  const [isOpen, setIsOpen] = useState(false);
   //////////////////////////////////////////////////
   //THEME
   //////////////////////////////////////////////////
@@ -29,9 +32,7 @@ const StartScreen = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (filterValue.category === "") {
-      // Will be done later
-      // Popup or modal
-      alert("test");
+      setIsOpen(true);
       return;
     }
     //Setting screen render n inform user which category chose
@@ -60,9 +61,34 @@ const StartScreen = (props) => {
     });
   };
 
+  const handleClosePopUp = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <section className="main-wrapper">
+        <Snackbar
+          open={isOpen}
+          autoHideDuration={6000}
+          onClose={handleClosePopUp}
+        >
+          <Alert
+            style={{
+              padding: "10px, 15px",
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+            onClose={handleClosePopUp}
+            severity="error"
+            variant="filled"
+            elevation={1}
+          >
+            👀 You need to choose the category!
+          </Alert>
+        </Snackbar>
+
         <h1 className="title">🎥 NETFLIX ROULETTE 🎲</h1>
         <form onSubmit={handleSubmit} className="form">
           <FormControl className="label">
@@ -97,7 +123,6 @@ const StartScreen = (props) => {
               ))}
             </Select>
           </FormControl>
-
           <Button type="submit" variant="contained" className={btnStyle}>
             START
           </Button>
@@ -130,6 +155,8 @@ const useSelectStyle = makeStyles({
     color: "#84817D",
     background: "rgba(132, 129, 125, 0.02)",
     borderRadius: "5px",
+    display: "flex",
+    justifyContent: "space-around",
   },
 });
 

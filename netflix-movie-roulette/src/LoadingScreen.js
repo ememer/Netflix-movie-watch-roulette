@@ -88,7 +88,7 @@ const LoadingScreen = (props) => {
     <div className="progress">
       {!isLoad ? <CircularProgress color="secondary"></CircularProgress> : null}
       <h1>
-        Looking{" "}
+        We looking{" "}
         <span
           className="type-content"
           style={{
@@ -113,7 +113,7 @@ const LoadingScreen = (props) => {
             onChange={handleYear}
             value={yearValue}
           >
-            <MenuItem value={"random"}>Random</MenuItem>
+            <MenuItem value={"random"}>Choose</MenuItem>
             {movieYears.map((elem, idx) => (
               <MenuItem value={elem} key={idx}>
                 {elem}

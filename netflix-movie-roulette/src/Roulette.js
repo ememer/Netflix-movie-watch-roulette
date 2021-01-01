@@ -29,18 +29,23 @@ const Roulette = (props) => {
       const drawnResult = Math.floor(
         Math.random() * (parseInt(propsResponse) - 0 + 1)
       );
-      console.log("res", drawnResult);
       console.log(props.response.results[drawnResult]);
       setDrawValue({
-        img: props.response.results[drawnResult].poster,
+        img:
+          props.response.results[drawnResult].poster !== `notfound`
+            ? props.response.results[drawnResult].poster
+            : `https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg`,
         title: props.response.results[drawnResult].title,
         synopsis: props.response.results[drawnResult].synopsis,
-        runtime: props.response.results[drawnResult].runtime,
+        runtime:
+          props.response.results[drawnResult].runtime !== 0
+            ? props.response.results[drawnResult].runtime
+            : `N/A`,
         year: props.response.results[drawnResult].year,
         imdb:
           props.response.results[drawnResult].imdbrating !== null
             ? props.response.results[drawnResult].imdbrating
-            : "No specify",
+            : `N/A`,
         type: props.response.results[drawnResult].vtype,
       });
     };
@@ -56,9 +61,9 @@ const Roulette = (props) => {
             <Paper className={paperStyle}>
               <CardMedia
                 style={{
-                  maxHeight: "50vh",
+                  maxHeight: "50vh ",
                   backgroundPosition: "center",
-                  backgroundSize: "cover",
+                  backgroundSize: "contain",
                 }}
                 component="img"
                 image={drawnValue.img}
@@ -124,6 +129,3 @@ const usePaperStyle = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 }));
-
-const message =
-  "The remaining space is the size of the flex container minus the size of all flex items' sizes together. If all sibling items have the same flex grow factor, then all items will receive the same share of remaining space, otherwise it is distributed according to the ratio defined by the different flex grow factors.";
