@@ -11,8 +11,10 @@ import {
 import clsx from "clsx";
 
 const LoadingScreen = (props) => {
+  ///////////THEME
   const selectStyle = clsx(useSelectStyle().root);
   const labelStyle = clsx(useLabelStyle().root);
+  ///////////////
   const [isLoad, setIsLoad] = useState(false);
   const [movieYears, setMovieYears] = useState([]);
   const [yearValue, setYearValue] = useState("random");
@@ -20,12 +22,18 @@ const LoadingScreen = (props) => {
   const [isFiltered, setIsFiltered] = useState(false);
   useEffect(() => {
     if (resetData) {
-      getFetchData(
-        ` https://unogsng.p.rapidapi.com/search?type=${props.userData.category}&start_year=${yearValue}&offset=0&end_year=${yearValue}`
-      );
+      if (props.userData.genre === "random") {
+        getFetchData(
+          `https://unogsng.p.rapidapi.com/search?type=${props.userData.category}&start_year=${yearValue}&end_year=${yearValue}`
+        );
+      } else {
+        getFetchData(
+          `https://unogsng.p.rapidapi.com/search?genrelist=${props.userData.genre}&type=${props.userData.category}&start_year=${yearValue}&end_year=${yearValue}`
+        );
+      }
     }
 
-    if (resetData === false) {
+    if (!isLoad) {
       if (props.userData.genre === "random") {
         getFetchData(
           `https://unogsng.p.rapidapi.com/search?type=${props.userData.category}&offset=0`
@@ -50,17 +58,20 @@ const LoadingScreen = (props) => {
           return response.json();
         })
         .then((data) => {
+          console.log(data);
           props.getResponse(data);
           const dataYearsValue = data.results.map((items) => items.year);
           setMovieYears([...new Set(dataYearsValue.sort())]);
           setIsLoad(true);
         })
+
+        // zmiana ekranu po załadowaniu
         .then(() => {
           if (isFiltered) {
             setIsFiltered(false);
             setTimeout(() => {
               props.changeScreen(3);
-            }, 1500);
+            }, 2500);
           }
         })
         .catch((err) => {
@@ -75,10 +86,6 @@ const LoadingScreen = (props) => {
       setIsLoad(false);
     }
   }, [props.userData.genre, resetData, yearValue]);
-
-  //   setTimeout(() => {
-  //     props.changeScreen(3);
-  //   }, 2500);
 
   const handleYear = (e) => {
     setYearValue(e.target.value);

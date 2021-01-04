@@ -29,10 +29,10 @@ const Roulette = (props) => {
       const drawnResult = Math.floor(
         Math.random() * (parseInt(propsResponse) - 0 + 1)
       );
-      console.log(props.response.results[drawnResult]);
+
       setDrawValue({
         img:
-          props.response.results[drawnResult].poster !== `notfound`
+          props.response.results[drawnResult].poster !== undefined
             ? props.response.results[drawnResult].poster
             : `https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg`,
         title: props.response.results[drawnResult].title,
