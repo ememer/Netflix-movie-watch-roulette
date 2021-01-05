@@ -35,7 +35,7 @@ const StartScreen = (props) => {
       return;
     }
     //Setting screen render n inform user which category chose
-    props.changeScreen(2);
+    props.nextScreen(2);
     props.userDataInput(filterValue);
   };
 
@@ -84,7 +84,7 @@ const StartScreen = (props) => {
             variant="filled"
             elevation={1}
           >
-            👀 You need to choose the category!
+            👀 You need to choose the category !
           </Alert>
         </Snackbar>
 
@@ -123,7 +123,7 @@ const StartScreen = (props) => {
             </Select>
           </FormControl>
           <Button type="submit" variant="contained" className={btnStyle}>
-            START
+            Search
           </Button>
         </form>
       </section>

@@ -14,8 +14,9 @@ const LoadingScreen = (props) => {
   ///////////THEME
   const selectStyle = clsx(useSelectStyle().root);
   const labelStyle = clsx(useLabelStyle().root);
+
   ///////////////
-  const [isLoad, setIsLoad] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [movieYears, setMovieYears] = useState([]);
   const [yearValue, setYearValue] = useState("random");
   const [resetData, setResetData] = useState(false);
@@ -33,7 +34,7 @@ const LoadingScreen = (props) => {
       }
     }
 
-    if (!isLoad) {
+    if (!isLoaded) {
       if (props.userData.genre === "random") {
         getFetchData(
           `https://unogsng.p.rapidapi.com/search?type=${props.userData.category}&offset=0`
@@ -58,20 +59,18 @@ const LoadingScreen = (props) => {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           props.getResponse(data);
           const dataYearsValue = data.results.map((items) => items.year);
           setMovieYears([...new Set(dataYearsValue.sort())]);
-          setIsLoad(true);
+          setIsLoaded(true);
         })
 
         // zmiana ekranu po załadowaniu
         .then(() => {
           if (isFiltered) {
             setIsFiltered(false);
-            setTimeout(() => {
-              props.changeScreen(3);
-            }, 2500);
+            props.nextScreen(3);
+            setTimeout(() => {}, 500);
           }
         })
         .catch((err) => {
@@ -83,7 +82,7 @@ const LoadingScreen = (props) => {
       setResetData(true);
       setIsFiltered(true);
     } else {
-      setIsLoad(false);
+      setIsLoaded(false);
     }
   }, [props.userData.genre, resetData, yearValue]);
 
@@ -93,7 +92,9 @@ const LoadingScreen = (props) => {
 
   return (
     <div className="progress">
-      {!isLoad ? <CircularProgress color="secondary"></CircularProgress> : null}
+      {!isLoaded ? (
+        <CircularProgress color="secondary"></CircularProgress>
+      ) : null}
       <h1>
         We looking{" "}
         <span
@@ -109,7 +110,7 @@ const LoadingScreen = (props) => {
         for you!{" "}
       </h1>
       <span>😎</span>
-      {isLoad ? (
+      {isLoaded ? (
         <FormControl className="label">
           <InputLabel className={labelStyle}>Year</InputLabel>
           <Select

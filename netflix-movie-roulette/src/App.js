@@ -13,6 +13,10 @@ function App() {
     setScreen(screen);
   }
 
+  function prevStep(screen) {
+    setScreen(screen);
+  }
+
   function getInputData(dataInput) {
     setUserDataInput(dataInput);
   }
@@ -27,7 +31,7 @@ function App() {
         <div className="App">
           <LoadingScreen
             getResponse={getResponse}
-            changeScreen={nextStep}
+            nextScreen={nextStep}
             userData={userDataInput}
           />
         </div>
@@ -35,14 +39,14 @@ function App() {
     case 3:
       return (
         <div className="App">
-          <Roulette response={filterResponse} />
+          <Roulette response={filterResponse} prevScreen={prevStep} />
         </div>
       );
 
     default:
       return (
         <div className="App">
-          <StartScreen userDataInput={getInputData} changeScreen={nextStep} />
+          <StartScreen userDataInput={getInputData} nextScreen={nextStep} />
         </div>
       );
   }
