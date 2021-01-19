@@ -1,14 +1,9 @@
 import "./Roulette.css";
-import {
-  Paper,
-  Grid,
-  CardMedia,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Paper, Grid, CardMedia, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
+import { usePaperStyle, useButtonStyle } from "./config/config";
 
 const Roulette = (props) => {
   const [drawnValue, setDrawValue] = useState({
@@ -28,34 +23,6 @@ const Roulette = (props) => {
   ////////////////////////////////
 
   useEffect(() => {
-    // const getFilteredResponse = (propsResponse) => {
-    //   const drawnResult = Math.floor(
-    //     Math.random() * (parseInt(propsResponse) - 0 + 1)
-    //   );
-
-    //   setDrawValue({
-    //     img:
-    //       props.response.results[drawnResult].poster.includes("http") ||
-    //       props.response.results[drawnResult].poster !== null ||
-    //       props.response.results[drawnResult].poster !== "N/A"
-    //         ? props.response.results[drawnResult].poster
-    //         : `https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg`,
-    //     title: props.response.results[drawnResult].title,
-    //     synopsis: props.response.results[drawnResult].synopsis,
-    //     runtime:
-    //       props.response.results[drawnResult].runtime !== 0
-    //         ? props.response.results[drawnResult].runtime
-    //         : `N/A`,
-    //     year: props.response.results[drawnResult].year,
-    //     imdb:
-    //       props.response.results[drawnResult].imdbrating !== null
-    //         ? props.response.results[drawnResult].imdbrating
-    //         : `N/A`,
-    //     type: props.response.results[drawnResult].vtype,
-    //   });
-    // };
-    // getFilteredResponse(props.response.results.length);
-
     function getFilteredResponse(objectLength) {
       return new Promise((resolve, reject) => {
         if (objectLength !== 0) {
@@ -69,8 +36,6 @@ const Roulette = (props) => {
     const fillContent = getFilteredResponse(props.response.results.length);
     fillContent
       .then((number) => {
-        console.log(props.response.results.length);
-        console.log(number);
         setDrawValue({
           img:
             props.response.results[number].poster.includes("http") ||
@@ -177,28 +142,3 @@ const Roulette = (props) => {
 };
 
 export default Roulette;
-
-const usePaperStyle = makeStyles((theme) => ({
-  root: {
-    border: "1px solid red",
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
-}));
-
-const useButtonStyle = makeStyles({
-  root: {
-    background: "#996726",
-    width: "25rem",
-    height: "5rem",
-    marginTop: "5rem",
-    color: "#1b1b22",
-
-    "&:hover": {
-      background: "#D78E2E",
-    },
-  },
-});

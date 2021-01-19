@@ -2,7 +2,6 @@ import Button from "@material-ui/core/Button";
 import {
   FormControl,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
   Snackbar,
@@ -11,6 +10,8 @@ import clsx from "clsx";
 import "./StartScreen.css";
 import { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
+import { useButtonStyle, useSelectStyle, useLabelStyle } from "./config/config";
+import { genreList } from "./config/genreList";
 
 const StartScreen = (props) => {
   const [genres] = useState(genreList);
@@ -132,52 +133,3 @@ const StartScreen = (props) => {
 };
 
 export default StartScreen;
-
-const useButtonStyle = makeStyles({
-  root: {
-    background: "#996726",
-    width: "25rem",
-    height: "5rem",
-    marginTop: "5rem",
-    color: "#1b1b22",
-
-    "&:hover": {
-      background: "#D78E2E",
-    },
-  },
-});
-
-const useSelectStyle = makeStyles({
-  root: {
-    margin: "5rem 0rem",
-    fontSize: "1.2rem",
-    color: "#84817D",
-    background: "rgba(132, 129, 125, 0.02)",
-    borderRadius: "5px",
-    display: "flex",
-    justifyContent: "space-around",
-  },
-});
-
-const useLabelStyle = makeStyles({
-  root: {
-    color: "#84817D",
-  },
-});
-
-const genreList = [
-  { genre: "Action & Adventure", netflixId: 1365 },
-  { genre: "Anime", netflixId: 7424 },
-  { genre: "Children & Family", netflixId: 783 },
-  { genre: "Classic", netflixId: 31574 },
-  { genre: "Comedies", netflixId: 6548 },
-  { genre: "Documentaries", netflixId: 6839 },
-  { genre: "Dramas", netflixId: 5763 },
-  { genre: "Horror", netflixId: 8711 },
-  { genre: "Music", netflixId: 1701 },
-  { genre: "Romantic", netflixId: 8883 },
-  { genre: "Sci-fi & Fantasy", netflixId: 1492 },
-  { genre: "Sports", netflixId: 4370 },
-  { genre: "Thrillers", netflixId: 8933 },
-  { genre: "TV Shows", netflixId: 83 },
-];
